@@ -13,5 +13,10 @@ import os
 directory = 'CSMHUNT_12301_2022-9-7_14-23-3.cvs'
 
 # iterate over files in that directory
-print(directory)
+
+s = open('CSMHUNT_12301_2022-9-7_14-23-3.cvs').read()
+for i in s:
+    print(i)
+print(s)
+
 
