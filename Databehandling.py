@@ -11,12 +11,13 @@ from scipy.stats import poisson
 
 import os
 import csv
+
 import re
 
 
 def conv(s):
   try:
-    s = float(s)
+    s = int(s)
   except:
     pass
   return s
@@ -34,9 +35,9 @@ with open('./CSMHUNT_12301_2022-9-7_14-23-3.cvs', 'r') as file:
   # Nu plotter jeg dataet
 
 
-x,y = data[1][1:],data[9][1:]
-
-
+#x= np.array(data[9][2:])
+#y= x/sum(x)
+#print(y)
 fig, ax = plt.subplots()
 
 
@@ -67,38 +68,27 @@ with open('./CSMHUNT_12301_2022-9-7_16-3-44.cvs', 'r') as file:
   #print(data)
   # Nu plotter jeg dataet
 
+x= np.array(sorted(data[9][2:]))
+x_mu = np.mean(x)
 
-x,y = data[0][1:],data[9][1:]
-
-
-fig, ax = plt.subplots()
-
-
-ax.stem(x,y )
-
-ax.set(xlim=(0, len(x)), xticks=np.arange(0,len(x),20),
-       ylim=(0, 1000), yticks=np.linspace(0, 1100, 10))
-
-plt.show()
-
-  print(x)
-mu = np.mean(y)
-print(mu)
-y = sorted(y)
+y = [t/sum(x) for t in x ]
 print(y)
 
+
+
 fig, ax = plt.subplots()
 
-ax.stem(x,y )
 
-ax.set(xlim=(0, len(x)), xticks=np.arange(0,len(x)+2,20),
-       ylim=(0, 1000), yticks=np.linspace(0, 1100, 10))
+ax.scatter(x,y)
+
+#ax.set(xlim=(0, len(x)), xticks=np.arange(0,len(x),1200),
+       #ylim=(0, 1), yticks=np.linspace(0, 1, 10))
 
 plt.show()
 
-  print(x)
 #%%
 plt.hist(x,density=True, edgecolor='black')
+plt.
 plt.show()
 
 
