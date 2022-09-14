@@ -1,4 +1,4 @@
-
+from scipy.optimize import curve_fit
 import numpy as np
 import pylab as pl
 import scipy.optimize
@@ -9,6 +9,7 @@ from scipy.misc import electrocardiogram
 from scipy.signal import find_peaks
 from scipy.stats import poisson
 import math
+import scipy.stats as ss
 
 import os
 import csv
@@ -36,7 +37,8 @@ with open('./Data_vinkel.cvs', 'r') as file:
   # Nu plotter jeg dataet
 
 print(data[9][2:])
-y = data[9][2:]
+y = np.array(data[9][2:])
+print(y)
 x = np.linspace(0,90,7)
 
 coefficients = np.polyfit(x, y, 3)
@@ -63,18 +65,31 @@ ax.plot(x,y)
 
 #Tager fit fra 2. semester
 
-def funlin(x, a, b):
-  return np.cos((x/90*np.pi/2)*a)**2
+
+def funlin(x, a, b,c):
+  return np.cos(a * (x)/90*np.pi/2)**2 * b + c
 
 
-xlin = np.array([0.8, 2.5, 4.4, 5.2, 7.4, 9.0])
-ylin = np.array([1.20, 2.41, 3.54, 4.44, 4.30, 6.10])
-yler = np.array([0.4,0.4,0.4,0.4,0.4,0.4,0.4])
+
+yler = np.array((y)**0.5)
+
 plt.errorbar(x, y, yler, fmt='o', ms=6, capsize=3)
 
-
-pinit1 = np.array([1., 60.])
-xhelp1 = np.linspace(0.,90.,50)
-yhelp1 = funlin(xhelp1, pinit1[0], pinit1[1])
+pinit1 = np.array([1, 120.,0])
+xhelp1 = np.linspace(0.,100.,90)
+yhelp1 = funlin(xhelp1, pinit1[0], pinit1[1], pinit1[2])
 plt.plot(xhelp1, yhelp1, 'r.')
 plt.show()
+
+#%%
+popt, pcov = curve_fit(funlin, x, y, p0=pinit1, sigma=yler, absolute_sigma=True)
+print('a (hældning):',popt[0],'    b (intercept):',popt[1])
+perr = np.sqrt(np.diag(pcov))
+print('usikkerheder:',perr)
+chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
+print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
+
+plt.errorbar(x, y, yler, fmt="o", ms=6, capsize= 3)
+plt.plot(xhelp1, funlin(xhelp1, *popt), 'k-.')
+plt.show()
+
