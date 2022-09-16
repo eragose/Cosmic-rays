@@ -48,7 +48,7 @@ fig, ax = plt.subplots()
 ax.scatter(x,ys)
 
 
-#%%
+.#%%
 plt.hist(x,50 ,density=True, edgecolor='black')
 plt.show()
 

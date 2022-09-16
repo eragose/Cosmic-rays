@@ -38,6 +38,7 @@ with open('./Data_vinkel.cvs', 'r') as file:
 
 print(data[9][2:])
 y = np.array(data[9][2:])
+
 print(y)
 x = np.linspace(0,90,7)
 
