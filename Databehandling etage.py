@@ -27,7 +27,20 @@ data.columns = ['num' , 'coinc', 'date' , 'time' , 'sec' , 'RecTime' , 'A' , 'B'
 etager = data['COINC'][1:][::2] # skal kun bruge hver anden data punkt
 print(etager)
 
-xs = np.linspace(0,4,5)
+
+
+xs = np.array([0,3.98+393.3])
+x = np.array([4,6,8])*394.8
+xs = list(xs) + list(x)
+
 plt.scatter(xs, etager)
+plt.xlabel('Altitude [cm]')
+plt.ylabel('Coincidents')
 plt.show()
+
 print(data["time"])
+
+#%%
+
+
+
