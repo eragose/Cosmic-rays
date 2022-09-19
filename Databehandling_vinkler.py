@@ -105,5 +105,5 @@ ax.set_ylabel("Counts")
 ax.set_xlabel("Angle (degree)")
 ax.set_xticks(ticks = np.linspace(0, 90, 7))
 ax.set_title("Mc shizzle")
-fig.show()
+plt.show()
 
