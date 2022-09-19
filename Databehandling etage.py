@@ -36,32 +36,39 @@ data = pd.DataFrame(merge_values)
 data.columns = ['num' , 'coinc', 'date' , 'time' , 'sec' , 'RecTime' , 'A' , 'B' , 'C' , 'COINC' , 'Pressure' , 'Temp' , 'Humidity' , 'Altitude' ]
 
 etager = data['COINC'][1:][::2] # skal kun bruge hver anden data punkt
-print("etager", etager)
+#print("etager", etager)
 
 
 
-xa = np.array([0,398.+393.3])
+xa = np.array([0,398.0+393.3])
 xb = np.array([4,6,8])*394.8
-x = list(xa) + list(xb)
+x = np.concatenate((xa, xb))
 
 def funlin(x, a, b,c):
   return a*np.exp(x*b)+c
 
-y = list(etager)
 
-yler = np.array((etager)**0.5)
+y = etager.to_numpy()
+print("type", type(y))
+print("Atype", type(y[0]))
 
+yler = y**0.5
+yler = yler.astype(np.float64)
+print("yler", yler)
 #plt.errorbar(x, y, yler, fmt='o', ms=6, capsize=3)
 
-pinit1 = np.array([1, 120.,0])
-xhelp1 = np.linspace(0.,90.,90)
+pinit1 = np.array([4, 0.001,90])
+xhelp1 = np.linspace(0.,x[-1],90)
 yhelp1 = funlin(xhelp1, pinit1[0], pinit1[1], pinit1[2])
 #plt.plot(xhelp1, yhelp1, 'r.')
 #plt.show()
 print("x", x, "y", y)
 #%%
+print("sigma type",type(yler))
+print("sigma arg type", type(yler[4]))
+
 popt, pcov = curve_fit(funlin, x, y, p0=pinit1, sigma=yler, absolute_sigma=True)
-print('a (hældning):',popt[0],'    b (intercept):',popt[1])
+print('a (hældning):',popt[0],'    b (intercept):',popt[1], '    c', popt[2])
 perr = np.sqrt(np.diag(pcov))
 print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
@@ -76,12 +83,8 @@ ax.set_xticks(ticks = np.linspace(0, 90, 7))
 ax.set_title("Mc shizzle")
 fig.show()
 
-plt.scatter(xs, etager)
-plt.xlabel('Altitude [cm]')
-plt.ylabel('Coincidents')
-plt.show()
 
-print(data["time"])
+
 
 #%%
 
