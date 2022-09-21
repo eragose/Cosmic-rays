@@ -55,6 +55,11 @@ fig, ax = plt.subplots()
 
 ax.plot(x,ys, label="poisson(" + str(x_mu) +")")
 
+mu = 931.12
+variance = 750
+sigma = math.sqrt(variance)
+x2 = np.linspace(mu - 4*sigma, mu + 4*sigma, 100)
+ax.plot(x2, ss.norm.pdf(x2, mu, sigma))
 
 #%%
 ax.hist(x,25 ,density=True, edgecolor='black')
@@ -85,11 +90,11 @@ print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
-ax1.errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data")
+ax1.hist(x,25 ,density=True, edgecolor='black')
 ax1.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
 ax1.legend()
-ax1.set_ylabel("Counts")
-ax1.set_xlabel("Angle (degree)")
+ax1.set_ylabel("amount")
+ax1.set_xlabel("Counts")
 
 ax1.set_title("ax1")
 fig1.show()
