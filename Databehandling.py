@@ -38,10 +38,14 @@ with open('./CSMHUNT_12301_2022-9-7_16-3-44.cvs', 'r') as file:
 
 x= np.array(sorted(data[9][2:]))
 x_mu = np.mean(x)
-print("x", type(x[0]))
+#print("x", type(x[0]))
 ys = poisson.pmf(x,x_mu)
 
-y = [t/sum(x) for t in x ]
+set_of_x = np.unique(x, return_counts=True)
+y = set_of_x[1]/len(x)
+
+
+
 
 plt.rc("font", family=["Helvetica", "Arial"]) # skifter skrifttype
 plt.rc("axes", labelsize=16)   # skriftstørrelse af `xlabel` og `ylabel`
@@ -49,23 +53,20 @@ plt.rc("xtick", labelsize=14, top=True, direction="in")  # skriftstørrelse af t
 plt.rc("ytick", labelsize=14, right=True, direction="in")
 plt.rc("axes", titlesize=16)
 
-fig1, ax1 = plt.subplots()
-fig1.set_size_inches(6,5,forward=True)
-fig, ax = plt.subplots()
 
-ax.plot(x,ys, label="poisson(" + str(x_mu) +")")
 
-mu = 931.12
-variance = 750
-sigma = math.sqrt(variance)
-x2 = np.linspace(mu - 4*sigma, mu + 4*sigma, 100)
-ax.plot(x2, ss.norm.pdf(x2, mu, sigma))
+fig, ax = plt.subplots(1,2)
+fig.set_size_inches(6,5,forward=True)
+
+ax[0].plot(x,ys, label="poisson(" + str(x_mu) +")")
+
 
 #%%
-ax.hist(x,25 ,density=True, edgecolor='black')
-ax.legend()
-ax.set_title("ax")
-fig.show()
+#ax[0].hist(x,25 ,density=True, edgecolor='black')
+ax[0].scatter(set_of_x[0],y, color = red)
+ax[0].legend()
+ax[0].set_title("ax")
+plt.show()
 
 def funlin(x, a):
   return poisson.pmf(x, a)
@@ -90,14 +91,14 @@ print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
-ax1.hist(x,25 ,density=True, edgecolor='black')
-ax1.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
-ax1.legend()
-ax1.set_ylabel("amount")
-ax1.set_xlabel("Counts")
+ax[1].errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data")
+ax[1].plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
+ax[1].legend()
+ax[1].set_ylabel("Counts")
+ax[1].set_xlabel("Angle (degree)")
 
-ax1.set_title("ax1")
-fig1.show()
+ax[1].set_title("ax1")
+plt.show()
 
 
 
