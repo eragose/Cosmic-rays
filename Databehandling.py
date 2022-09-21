@@ -55,18 +55,19 @@ plt.rc("axes", titlesize=16)
 
 
 
+
 fig, ax = plt.subplots(1,2)
 fig.set_size_inches(6,5,forward=True)
 
 ax[0].plot(x,ys, label="poisson(" + str(x_mu) +")")
 
-
+x = set_of_x[0]
 #%%
 #ax[0].hist(x,25 ,density=True, edgecolor='black')
-ax[0].scatter(set_of_x[0],y, color = red)
+ax[0].scatter(set_of_x[0],y, color = "r")
 ax[0].legend()
 ax[0].set_title("ax")
-plt.show()
+#plt.show()
 
 def funlin(x, a):
   return poisson.pmf(x, a)
@@ -78,10 +79,12 @@ yler = np.array((y))*0.1
 #plt.errorbar(x, y, yler, fmt='o', ms=6, capsize=3)
 
 pinit1 = 931
-xhelp1 = np.linspace(800,1050,100)
+xhelp1 = np.linspace(x[0],x[-1],x[-1]-x[0]+1)
 #yhelp1 = funlin(xhelp1, pinit1)
 #plt.plot(xhelp1, yhelp1, 'r.')
 #plt.show()
+print(xhelp1)
+#print(funlin(xhelp1, 940))
 
 #%%
 popt, pcov = curve_fit(funlin, x, y, p0=pinit1, sigma=yler, absolute_sigma=True)
@@ -91,7 +94,7 @@ print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
-ax[1].errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data")
+ax[1].scatter(x, y, color = "r", label = "data")
 ax[1].plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
 ax[1].legend()
 ax[1].set_ylabel("Counts")
@@ -99,7 +102,6 @@ ax[1].set_xlabel("Angle (degree)")
 
 ax[1].set_title("ax1")
 plt.show()
-
 
 
 
