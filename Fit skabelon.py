@@ -53,7 +53,7 @@ popt, pcov = curve_fit(funlin, x_data, y_data, p0=pinit1, sigma=yler, absolute_s
 print('Coefficients:',*popt)
 perr = np.sqrt(np.diag(pcov))
 print('Uncertaity:',perr)
-chmin = np.sum(((y-funlin(x_data, *popt))/yler)**2)
+chmin = np.sum(((y_data-funlin(x_data, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
 
