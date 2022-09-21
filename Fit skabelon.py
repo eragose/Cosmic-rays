@@ -23,7 +23,7 @@ def funlin(x, *params):
   return np.cos(a * (x)/90*np.pi/2)**2 * b + c          #Fitting function
 
 pinit1 = np.array([1, 120.,0])                          #Help variables
-xhelp1 = np.linspace(0.,90.,90)
+xhelp1 = np.linspace(0.,90.,90)                         #Adjust to data
 yhelp1 = funlin(xhelp1, pinit1[0], pinit1[1], pinit1[2])
 
 
