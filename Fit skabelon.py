@@ -20,7 +20,7 @@ plot_title = 'McShizzle'
 ticks = np.linspace(0, 90, 7)
 
 def funlin(x, *params):
-  return np.cos(a * (x)/90*np.pi/2)**2 * b + c          #Fitting function
+  return np.cos(params[0] * (x)/90*np.pi/2)**2 * params[1] + params[2]          #Fitting function
 
 pinit1 = np.array([1, 120.,0])                          #Help variables
 xhelp1 = np.linspace(0.,90.,90)                         #Adjust to data
