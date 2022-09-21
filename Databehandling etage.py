@@ -78,15 +78,13 @@ ax.errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data")
 ax.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
 ax.legend()
 ax.set_ylabel("Counts")
-ax.set_xlabel("altitude (cm)")
-#ax.set_xticks(ticks = np.linspace(0, 90, 7))
+ax.set_xlabel("Altitude (cm)")
+ax.set_xticks(ticks = np.linspace(0, 3200, 5))
 ax.set_title("Mc shizzle")
-fig.show()
+ax.grid()
+plt.show()
 
 
-
-
-#%%
 
 
 
