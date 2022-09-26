@@ -74,14 +74,20 @@ print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
+ux,uy = x[1],195
+uyl = uy ** 0.5
+
+ax.errorbar(ux,uy,uyl, fmt="o", ms=6, capsize= 3, label = "data outside",color= 'r')
 ax.errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data")
 ax.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
 ax.legend()
 ax.set_ylabel("Counts")
 ax.set_xlabel("Altitude (cm)")
 ax.set_xticks(ticks = np.linspace(0, 3200, 5))
-ax.set_title("Mc shizzle")
+ax.set_title("Counts as a function of altitude")
 ax.grid()
+
+
 plt.show()
 
 
