@@ -56,17 +56,18 @@ plt.rc("axes", titlesize=16)
 
 
 
-fig, ax = plt.subplots(1,2)
+fig, ax = plt.subplots()
+fig1, ax1 = plt.subplots()
 fig.set_size_inches(6,5,forward=True)
 
-ax[0].plot(x,ys, label="poisson(" + str(x_mu) +")")
+ax.plot(x,ys, label="poisson(" + str(x_mu) +")")
 
 x = set_of_x[0]
 #%%
-#ax[0].hist(x,25 ,density=True, edgecolor='black')
-ax[0].scatter(set_of_x[0],y, color = "r")
-ax[0].legend()
-ax[0].set_title("ax")
+#ax.hist(x,25 ,density=True, edgecolor='black')
+ax.scatter(set_of_x[0],y, color = "r")
+ax.legend()
+ax.set_title("ax")
 #plt.show()
 
 def funlin(x, a):
@@ -114,14 +115,15 @@ print('usikkerheder:',perr)
 chmin = np.sum(((y-normfit(x, *popt1))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
-ax[1].scatter(x, y, color = "r", label = "data")
-ax[1].plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fitpoisson")
-ax[1].plot(xhelp1, normfit(xhelp1, *popt1), 'b-.', label = "fitnorm")
-ax[1].legend()
-ax[1].set_ylabel("Counts")
-ax[1].set_xlabel("Angle (degree)")
+ax1.scatter(x, y, color = "r", label = "data")
+ax1.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fitpoisson")
+ax1.plot(xhelp1, normfit(xhelp1, *popt1), 'b-.', label = "fitnorm")
+ax1.legend()
+ax1.set_ylabel("Frequency")
+ax1.set_xlabel("Counts")
 
-ax[1].set_title("ax1")
+ax1.set_title("Count distribution")
+fig1.savefig("Count distribution")
 plt.show()
 
 
