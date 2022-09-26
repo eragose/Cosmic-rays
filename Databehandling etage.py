@@ -87,9 +87,9 @@ ax.set_xticks(ticks = np.linspace(0, 3200, 5))
 ax.set_title("Counts as a function of altitude")
 ax.grid()
 
-
-plt.show()
 plt.savefig('etager')
+plt.show()
+
 
 
 
