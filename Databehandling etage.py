@@ -89,7 +89,7 @@ ax.grid()
 
 
 plt.show()
-
+plt.savefig('etager')
 
 
 
