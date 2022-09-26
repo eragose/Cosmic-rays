@@ -108,3 +108,37 @@ ax.set_title("Counts through building")
 fig.savefig("angles")
 plt.show()
 
+
+with open('./Data_vinkel2.cvs', 'r') as file:
+  csvreader = csv.reader(file, delimiter=';')
+  var = []
+  for i in csvreader:
+    t = [conv(s) for s in i]
+    var.append(t)
+  data2 = list(zip(*var))
+
+yc = np.concatenate((y, data2[9][2:]))
+xc = np.concatenate((x,x))
+
+fig1, ax1 = plt.subplots()
+fig1.set_size_inches(6,5,forward=True)
+
+#%%
+ylerc = np.array((yc)**0.5)
+
+popt, pcov = curve_fit(funlin, xc, yc, p0=pinit1, sigma=ylerc, absolute_sigma=True)
+print('kombinerede værdier a (hældning):',popt[0],'    b (intercept):',popt[1], '    c (offset):',popt[2])
+perr = np.sqrt(np.diag(pcov))
+print('kombinerede usikkerheder:',perr)
+chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
+print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
+
+ax1.errorbar(xc, yc, ylerc, fmt="o", ms=6, capsize= 3, label = "data")
+ax1.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
+ax1.legend()
+ax1.set_ylabel("Counts")
+ax1.set_xlabel("Angle (degree)")
+ax1.set_xticks(ticks = np.linspace(0, 90, 7))
+ax1.set_title("all angle counts")
+fig1.savefig("angles combined")
+fig1.show()
