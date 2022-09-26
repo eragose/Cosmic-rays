@@ -83,7 +83,7 @@ xhelp1 = np.linspace(x[0],x[-1],x[-1]-x[0]+1)
 #yhelp1 = funlin(xhelp1, pinit1)
 #plt.plot(xhelp1, yhelp1, 'r.')
 #plt.show()
-print(xhelp1)
+
 #print(funlin(xhelp1, 940))
 
 #%%
@@ -94,8 +94,29 @@ print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
+mu = 931
+variance = 200
+sigma = math.sqrt(variance)
+#x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
+
+
+def normfit(x, mu, variance):
+  sigma = math.sqrt(variance)
+  return ss.norm.pdf(x, mu, sigma)
+
+pinit =[mu, variance]
+
+popt1, pcov1 = curve_fit(normfit, x, y, p0=pinit, sigma=yler, absolute_sigma=True)
+print('mu :',popt1[0])
+print('varians :',popt1[1])
+perr = np.sqrt(np.diag(pcov1))
+print('usikkerheder:',perr)
+chmin = np.sum(((y-normfit(x, *popt1))/yler)**2)
+print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
+
 ax[1].scatter(x, y, color = "r", label = "data")
-ax[1].plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
+ax[1].plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fitpoisson")
+ax[1].plot(xhelp1, normfit(xhelp1, *popt1), 'b-.', label = "fitnorm")
 ax[1].legend()
 ax[1].set_ylabel("Counts")
 ax[1].set_xlabel("Angle (degree)")
