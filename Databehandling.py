@@ -123,7 +123,7 @@ ax1.set_ylabel("Frequency")
 ax1.set_xlabel("Counts")
 
 ax1.set_title("Count distribution")
-fig1.savefig("Count distribution")
+fig1.savefig("Count distribution ")
 plt.show()
 
 
