@@ -49,8 +49,7 @@ def funlin(x, a, b,c):
 
 
 y = etager.to_numpy()
-print("type", type(y))
-print("Atype", type(y[0]))
+
 
 yler = y**0.5
 yler = yler.astype(np.float64)

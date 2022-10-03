@@ -96,7 +96,7 @@ chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
 mu = 931
-variance = 200
+variance = 100
 sigma = math.sqrt(variance)
 #x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
 
@@ -125,6 +125,8 @@ ax1.set_xlabel("Counts")
 ax1.set_title("Count distribution")
 fig1.savefig("Count distribution ")
 plt.show()
+
+print(len(x))
 
 
 

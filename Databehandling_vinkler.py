@@ -144,3 +144,6 @@ ax1.set_title("All angle counts")
 ax1.text(0,20,'cos('+str(round(popt[0],2))+' x/90*pi/2)^2 * '+ str(round(popt[1],2))+ ' +'+str(round(popt[2],2)))
 fig1.savefig("angles combined")
 fig1.show()
+
+print("1 45 degree", xc[3], yc[3], "60 degree", xc[5], yc[5])
+print("2 45 degree", xc[10], yc[10], "60 degree", xc[12], yc[12])
