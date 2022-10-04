@@ -77,14 +77,14 @@ ux,uy = x[1],195
 uyl = uy ** 0.5
 
 ax.errorbar(ux,uy,uyl, fmt="o", ms=6, capsize= 3, label = "data outside",color= 'r')
-ax.errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data")
+ax.errorbar(x, y, yler, fmt="o", ms=6, capsize= 3, label = "data at different altitudes")
 ax.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fit")
 ax.text(0,150,'f(x) = exp('+str(6e-4)+'x)'+str(round(popt[0],2))+'+'+str(round(popt[2],2)),fontsize='x-large')
 ax.set_ylabel("Counts")
 ax.set_xlabel("Altitude (cm)")
 ax.set_xticks(ticks = np.linspace(0, 3200, 5))
 ax.set_title("Counts as a function of altitude")
-
+ax.legend(loc = 'lower right')
 ax.grid()
 
 plt.savefig('etager')
