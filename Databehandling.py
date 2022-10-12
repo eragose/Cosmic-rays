@@ -77,17 +77,19 @@ fig1.set_size_inches(6,5,forward=True)
 
 #ax.plot(x,y, label="poisson(" + str(x_mu) +")")
 
-def funlin(x, a):
-  return poisson.pmf(x, a)
+def funlin(x, a, b):
+  return b*poisson.pmf(x, a)
 
 
 yler = np.array((y))*0.1
 print(yler)
-pinit1 = [x_mu]
+pinit1 = [x_mu, 5]
 xhelp1 = np.linspace(int(x[0]),int(x[-1]),int(x[-1])-int(x[0])+1)
 
+print("poisson")
 popt, pcov = curve_fit(funlin, x, y, p0=pinit1, sigma=yler, absolute_sigma=True)
 print('a (hældning):',popt[0])
+print('b: ', popt[1])
 perr = np.sqrt(np.diag(pcov))
 print('usikkerheder:',perr)
 chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
@@ -99,15 +101,16 @@ variance = x_var
 sigma = math.sqrt(variance)
 
 
-def normfit(x, mu, variance):
+def normfit(x, mu, variance, b):
   sigma = math.sqrt(variance)
-  return ss.norm.pdf(x, mu, sigma)
+  return b*ss.norm.pdf(x, mu, sigma)
 
-pinit =[mu, variance]
+pinit =[mu, variance, 5]
 
 popt1, pcov1 = curve_fit(normfit, x, y, p0=pinit, sigma=yler, absolute_sigma=True)
 print('mu :',popt1[0])
 print('varians :',popt1[1])
+print('b: ', popt1[2])
 perr = np.sqrt(np.diag(pcov1))
 print('usikkerheder:',perr)
 chmin = np.sum(((y-normfit(x, *popt1))/yler)**2)
@@ -120,8 +123,8 @@ ax1.legend()
 ax1.set_ylabel("Frequency")
 ax1.set_xlabel("Counts")
 
-ax1.set_title("Count distribution")
-fig1.savefig("Count distribution ")
+ax1.set_title("Count distribution with scaling")
+fig1.savefig("Count distribution 2")
 plt.show()
 
 print(len(x))
