@@ -36,13 +36,30 @@ with open('./CSMHUNT_12301_2022-9-7_16-3-44.cvs', 'r') as file:
   #print(data)
   # Nu plotter jeg dataet
 
+
 x= np.array(sorted(data[9][2:]))
+
+x_counts, bin = np.histogram(x, bins=15)
+
+
+print(len(x))
+#plt.hist(x, bins=15)
+#plt.show()
+
 x_mu = np.mean(x)
 #print("x", type(x[0]))
 ys = poisson.pmf(x,x_mu)
 
-set_of_x = np.unique(x, return_counts=True)
-y = set_of_x[1]/len(x)
+x_frequency = x_counts/len(x)
+#print(x_frequency, len(x_frequency), bin)
+
+bin_points = []
+for i in range(len(bin)-1):
+  bin_points.append((bin[i]+bin[i+1])/2)
+
+
+y = x_frequency
+x = bin_points
 
 
 
@@ -54,18 +71,71 @@ plt.rc("ytick", labelsize=14, right=True, direction="in")
 plt.rc("axes", titlesize=16)
 
 
+fig1, ax1 = plt.subplots()
+fig1.set_size_inches(6,5,forward=True)
+
+#ax.plot(x,y, label="poisson(" + str(x_mu) +")")
+
+def funlin(x, a):
+  return poisson.pmf(x, a)
 
 
-fig, ax = plt.subplots()
+yler = np.array((y))*0.1
+pinit1 = 931
+xhelp1 = np.linspace(int(x[0]),int(x[-1]),int(x[-1])-int(x[0])+1)
+print(xhelp1)
+popt, pcov = curve_fit(funlin, x, y, p0=pinit1, sigma=yler, absolute_sigma=True)
+print('a (hældning):',popt[0])
+perr = np.sqrt(np.diag(pcov))
+print('usikkerheder:',perr)
+chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
+print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
+
+
+mu = 931
+variance = 100
+sigma = math.sqrt(variance)
+
+
+def normfit(x, mu, variance):
+  sigma = math.sqrt(variance)
+  return ss.norm.pdf(x, mu, sigma)
+
+pinit =[mu, variance]
+
+popt1, pcov1 = curve_fit(normfit, x, y, p0=pinit, sigma=yler, absolute_sigma=True)
+print('mu :',popt1[0])
+print('varians :',popt1[1])
+perr = np.sqrt(np.diag(pcov1))
+print('usikkerheder:',perr)
+chmin = np.sum(((y-normfit(x, *popt1))/yler)**2)
+print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
+
+ax1.errorbar(x, y,yerr=yler, color = "r", label = "data", fmt = 'o', capsize = 10)
+ax1.plot(xhelp1, funlin(xhelp1, *popt), 'k-.', label = "fitpoisson")
+ax1.plot(xhelp1, normfit(xhelp1, *popt1), 'b-.', label = "fitnorm")
+ax1.legend()
+ax1.set_ylabel("Frequency")
+ax1.set_xlabel("Counts")
+
+ax1.set_title("Count distribution")
+fig1.savefig("Count distribution ")
+plt.show()
+
+print(len(x))
+
+
+
+""" fig, ax = plt.subplots()
 fig1, ax1 = plt.subplots()
 fig.set_size_inches(6,5,forward=True)
 
 ax.plot(x,ys, label="poisson(" + str(x_mu) +")")
 
-x = set_of_x[0]
+x = set_of_x
 #%%
 #ax.hist(x,25 ,density=True, edgecolor='black')
-ax.scatter(set_of_x[0],y, color = "r")
+ax.scatter(x,y, color = "r")
 ax.legend()
 ax.set_title("ax")
 #plt.show()
@@ -126,7 +196,7 @@ ax1.set_title("Count distribution")
 fig1.savefig("Count distribution ")
 plt.show()
 
-print(len(x))
+print(len(x)) """
 
 
 
