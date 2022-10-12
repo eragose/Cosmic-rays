@@ -39,16 +39,17 @@ with open('./CSMHUNT_12301_2022-9-7_16-3-44.cvs', 'r') as file:
 
 x= np.array(sorted(data[9][2:]))
 
-x_counts, bin = np.histogram(x, bins=15)
+x_counts, bin = np.histogram(x, bins=19)
 
 
-print(len(x))
+
 #plt.hist(x, bins=15)
 #plt.show()
 
 x_mu = np.mean(x)
+x_var = np.std(x)**2
 #print("x", type(x[0]))
-ys = poisson.pmf(x,x_mu)
+
 
 x_frequency = x_counts/len(x)
 #print(x_frequency, len(x_frequency), bin)
@@ -62,7 +63,7 @@ y = x_frequency
 x = bin_points
 
 
-
+plt.scatter(x,y)
 
 plt.rc("font", family=["Helvetica", "Arial"]) # skifter skrifttype
 plt.rc("axes", labelsize=16)   # skriftstørrelse af `xlabel` og `ylabel`
@@ -81,9 +82,10 @@ def funlin(x, a):
 
 
 yler = np.array((y))*0.1
-pinit1 = 931
+print(yler)
+pinit1 = [x_mu]
 xhelp1 = np.linspace(int(x[0]),int(x[-1]),int(x[-1])-int(x[0])+1)
-print(xhelp1)
+
 popt, pcov = curve_fit(funlin, x, y, p0=pinit1, sigma=yler, absolute_sigma=True)
 print('a (hældning):',popt[0])
 perr = np.sqrt(np.diag(pcov))
@@ -92,8 +94,8 @@ chmin = np.sum(((y-funlin(x, *popt))/yler)**2)
 print('chi2:',chmin,' ---> p:', ss.chi2.cdf(chmin,4))
 
 
-mu = 931
-variance = 100
+mu = x_mu
+variance = x_var
 sigma = math.sqrt(variance)
 
 
