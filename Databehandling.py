@@ -39,7 +39,8 @@ with open('./CSMHUNT_12301_2022-9-7_16-3-44.cvs', 'r') as file:
 
 x= np.array(sorted(data[9][2:]))
 
-x_counts, bin = np.histogram(x, bins='auto')
+y, bin = np.histogram(x, bins='auto', density=True)
+y0, bin0 = np.histogram(x, bins='auto')
 
 
 
@@ -51,15 +52,15 @@ x_var = np.std(x)**2
 #print("x", type(x[0]))
 
 
-x_frequency = x_counts/len(x)
+
 #print(x_frequency, len(x_frequency), bin)
 
 bin_points = []
 for i in range(len(bin)-1):
   bin_points.append((bin[i]+bin[i+1])/2)
 
-print("sum", np.sum(x_frequency), "\n")
-y = x_frequency
+#print("sum", np.sum(x_frequency), "\n")
+
 x = bin_points
 
 
@@ -78,9 +79,9 @@ fig1.set_size_inches(6,5,forward=True)
 #ax.plot(x,y, label="poisson(" + str(x_mu) +")")
 
 def funlin(x, a):
-  return poisson.pmf(x, a)+0.01
+  return poisson.pmf(x, a)
 
-yler = np.array((y))*0.1
+yler = np.sqrt(y0)*y/y0
 
 #print(yler)
 pinit1 = [x_mu]
@@ -106,7 +107,7 @@ def normfit(x, mu, variance):
   #print(variance)
   sigma = math.sqrt(variance)
   #return ss.norm.pdf(x, mu, sigma)
-  return 1/(sigma*2*np.pi)*np.exp(-1/2*((x-mu)/sigma)**2)+0.01
+  return 1/(sigma*2*np.pi)*np.exp(-1/2*((x-mu)/sigma)**2)
 
 pinit =[mu, variance]
 
