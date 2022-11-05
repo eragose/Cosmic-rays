@@ -109,7 +109,7 @@ def normfit(x, mu, variance):
   #return ss.norm.pdf(x, mu, sigma)
   return 1/(sigma*2*np.pi)*np.exp(-1/2*((x-mu)/sigma)**2)
 
-pinit =[mu, variance]
+pinit =[mu, variance-100]
 
 
 popt1, pcov1 = curve_fit(normfit, x, y, p0=pinit, sigma=yler, absolute_sigma=True, bounds = [[900, 0], [960,np.inf]])
